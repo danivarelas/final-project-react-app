@@ -1,0 +1,51 @@
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+.wrapper {
+    display: flex;
+    background-color: #eee;
+    width: 100%;
+    align-items: stretch;
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+#content {
+    padding: 1em 2em;
+    width: 100%;
+    margin-left: 250px;
+    min-height: 100vh;
+    transition: all 0.3s;
+
+    .page-title {
+        display: flex;
+        justify-content: center;
+        margin: 1em 0;
+    }
+
+    .exchange-rates {
+        margin: 2em 0;
+        text-align: right;
+
+        .exchange-rates-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 0.5em;
+        }
+
+        p {
+            margin: 0;
+        }
+    }
+}
+
+@media (max-width:899px) {
+    #content {
+        padding: 1em;
+        margin-left: 0;
+    }
+}

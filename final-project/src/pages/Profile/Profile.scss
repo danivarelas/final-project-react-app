@@ -1,0 +1,33 @@
+.block-section {
+    background-color: white;
+    border-radius: 0.5em;
+    box-shadow: 2px 2px 5px grey;
+    padding: 2em;
+    margin-bottom: 3em;
+
+    .block-section-header {
+        margin-bottom: 2em;
+        
+        .block-section-header-text {
+            padding: 0.5em 0;
+            border-bottom: 0.1em solid rgb(39, 145, 194);
+        }
+
+        .block-section-header-edit {
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+
+    .label-group {
+
+        .label-title {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .label-description {
+            font-size: 1.2em;
+        }
+    }
+}
