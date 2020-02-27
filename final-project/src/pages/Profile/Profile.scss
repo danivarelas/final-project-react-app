@@ -10,6 +10,7 @@
         
         .block-section-header-text {
             padding: 0.5em 0;
+            font-size: 1.5em;
             border-bottom: 0.1em solid rgb(39, 145, 194);
         }
 
@@ -19,15 +20,4 @@
         }
     }
 
-    .label-group {
-
-        .label-title {
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-
-        .label-description {
-            font-size: 1.2em;
-        }
-    }
 }

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import validate from '../../utils/JWTParser';
 import Navbar from '../../components/Navbar/Navbar';
 import Axios from 'axios';
-//import './NewTransfer.scss';
 
 const OpenAccount = () => {
 
@@ -15,9 +14,6 @@ const OpenAccount = () => {
     if (!validate(sessionStorage.getItem('JWT'))) {
         history.push("/login");
     }
-
-    useEffect(() => {
-    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -43,7 +39,6 @@ const OpenAccount = () => {
         }
     }
 
-
     const handleCancel = () => { history.goBack(); }
 
     const handleDescription = event => {
@@ -58,9 +53,14 @@ const OpenAccount = () => {
         <div className="wrapper">
             <div id="content">
                 <Navbar />
+                <div className="container-fluid">
+                    <div className="row">
+                        <h2 className="page-title">Open Account</h2>
+                    </div>
+                </div>
                 <div className="block-section container">
                     <div className="block-section-header">
-                        <h3 className="block-section-header-text">Open Account</h3>
+                        <h3 className="block-section-header-text">New Account Details</h3>
                     </div>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">

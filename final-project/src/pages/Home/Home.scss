@@ -5,7 +5,7 @@
 
 .wrapper {
     display: flex;
-    background-color: #eee;
+    background-color: #E6ECF2;
     width: 100%;
     align-items: stretch;
 }
@@ -21,10 +21,14 @@
     min-height: 100vh;
     transition: all 0.3s;
 
+    .col {
+        padding: 0;
+    }
+
     .page-title {
         display: flex;
-        justify-content: center;
         margin: 1em 0;
+        font-size: 1.8em;
     }
 
     .exchange-rates {

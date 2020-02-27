@@ -12,7 +12,6 @@ const Home = () => {
     const history = useHistory();
 
     const [accounts, setAccounts] = useState([]);
-    const [cards, setCards] = useState([]);
     const [exchangeRates, setExchangeRates] = useState({});
 
     if (!validate(sessionStorage.getItem('JWT'))) {
@@ -23,48 +22,46 @@ const Home = () => {
         const token = sessionStorage.getItem('JWT');
         const claims = validate(token);
         if (claims) {
-            Axios.get(`http://localhost:8081/api/v1/account/byUserId/${claims.id}`, {
-                headers: { JWT: token }
-            }).then(res => {
-                const { data } = res;
-                console.log(data)
-                setAccounts(data);
-            }).catch(e => {
+            if (!accounts.length) {
+                Axios.get(`http://localhost:8081/api/v1/account/byUserId/${claims.id}`, {
+                    headers: { JWT: token }
+                }).then(res => {
+                    const { data } = res;
+                    console.log(data)
+                    setAccounts(data);
+                }).catch(e => {
 
-            });
-            Axios.get(`http://localhost:8081/api/v1/creditCard/byUserId/${claims.id}`, {
-                headers: { JWT: token }
-            }).then(res => {
-                const { data } = res;
-                setCards(data);
-            }).catch(e => {
-
-            });
+                });
+            }
             let dateToday = new Date();
             dateToday = format(dateToday, "dd/MM/yyyy");
             Axios.get(`https://tipodecambio.paginasweb.cr/api/${dateToday}`)
-            .then(res => {
-                const { data } = res;
-                setExchangeRates(data);
-            });
+                .then(res => {
+                    const { data } = res;
+                    setExchangeRates(data);
+                });
         }
-    }, []);
+    }, [accounts, exchangeRates]);
 
     return (
         <div className="wrapper">
             <div id="content">
                 <Navbar />
                 <div className="container-fluid">
-                    <h2 className="page-title">Products Summary</h2>
-                    <div className="exchange-rates">
-                        <p className="exchange-rates-title">Exchange rates today</p>
-                        <p><strong>Buy:</strong> {exchangeRates.compra} CRC</p>
-                        <p><strong>Sell:</strong> {exchangeRates.venta} CRC</p>
+                    <div className="row">
+                        <div className="col">
+                            <h2 className="page-title">Products Summary</h2>
+                        </div>
+                        <div className="col">
+                            <div className="exchange-rates">
+                                <p className="exchange-rates-title">Exchange rates today</p>
+                                <p><strong>Buy:</strong> {exchangeRates.compra} CRC</p>
+                                <p><strong>Sell:</strong> {exchangeRates.venta} CRC</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
                 <Accounts accounts={accounts} />
-                
             </div>
         </div>
     );

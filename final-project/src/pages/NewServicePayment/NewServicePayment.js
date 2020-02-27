@@ -4,6 +4,7 @@ import validate from '../../utils/JWTParser';
 import Navbar from '../../components/Navbar/Navbar';
 import Axios from 'axios';
 import emailjs from 'emailjs-com';
+import LabelGroup from '../../components/LabelGroup/LabelGroup';
 
 const NewServicePayment = () => {
 
@@ -18,36 +19,46 @@ const NewServicePayment = () => {
     const [services, setServices] = useState([]);
     const [invalidAmount, setInvalidAmount] = useState(false);
     const [insufficientFunds, setInsufficientFunds] = useState(false);
+    const [inputDisabled, setInputDisabled] = useState(false);
+    const [submitDisabled, setSubmitDisabled] = useState(true);
 
     if (!validate(sessionStorage.getItem('JWT'))) {
         history.push("/login");
     }
 
     useEffect(() => {
+        if (description && amount && serviceId) {
+            setSubmitDisabled(false);
+        } else {
+            setSubmitDisabled(true);
+        }
         const token = sessionStorage.getItem('JWT');
         const claims = validate(token);
         if (claims) {
-            Axios.get(`http://localhost:8081/api/v1/account/byUserId/${claims.id}`, {
-                headers: { JWT: token }
-            }).then(res => {
-                const { data } = res;
-                setAccounts(data);
-                setAccountNumber(data[0].accountNumber);
-            }).catch(e => {
+            if (!accounts.length) {
+                Axios.get(`http://localhost:8081/api/v1/account/byUserId/${claims.id}`, {
+                    headers: { JWT: token }
+                }).then(res => {
+                    const { data } = res;
+                    setAccounts(data);
+                    setAccountNumber(data[0].accountNumber);
+                }).catch(e => {
 
-            });
-            Axios.get(`http://localhost:8081/api/v1/service`, {
-                headers: { JWT: token }
-            }).then(res => {
-                const { data } = res;
-                console.log(data)
-                setServices(data);
-                setServiceId(data[0].id);
-            }).catch(e => {
+                });
+            }
+            if (!services.length) {
+                Axios.get(`http://localhost:8081/api/v1/service`, {
+                    headers: { JWT: token }
+                }).then(res => {
+                    const { data } = res;
+                    setServices(data);
+                    setServiceId(data[0].id);
+                }).catch(e => {
 
-            });
+                });
+            }
         }
-    }, []);
+    }, [accounts, serviceId, services, amount, description]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -78,7 +89,7 @@ const NewServicePayment = () => {
             Axios.post(`http://localhost:8081/api/v1/payment`, payment, {
                 headers: { JWT: token }
             }).then(res => {
-                const {data} = res;
+                const { data } = res;
                 const paidService = services.filter(service => service.id === data.serviceId)[0].serviceName;
                 let templateParams = {
                     subject: `Service Payment: ${paidService}`,
@@ -129,13 +140,24 @@ const NewServicePayment = () => {
         setAmount(event.target.value);
     };
 
+    const toggleDisabled = event => {
+        setInputDisabled(!inputDisabled);
+        setInvalidAmount(false);
+        setInsufficientFunds(false);
+    };
+
     return (
         <div className="wrapper">
             <div id="content">
                 <Navbar />
+                <div className="container-fluid">
+                    <div className="row">
+                        <h2 className="page-title">Pay Services</h2>
+                    </div>
+                </div>
                 <div className="block-section container-fluid">
                     <div className="block-section-header">
-                        <h3 className="block-section-header-text">Pay Services</h3>
+                        <h3 className="block-section-header-text">Payment Details</h3>
                     </div>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
@@ -183,10 +205,22 @@ const NewServicePayment = () => {
                                 <div className="invalid-entry">You have insufficient funds.</div>
                             }
                         </div>
-
-                        <button type="cancel" className="btn btn-danger" onClick={handleCancel}>Cancel</button>
-                        <button type="submit" className="btn btn-success">Pay</button>
-
+                        {!inputDisabled &&
+                            <div className="form-group">
+                                <button type="cancel" className="btn btn-danger" onClick={handleCancel}>Cancel</button>
+                                <button disabled={submitDisabled} type="button" className="btn btn-success" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onClick={toggleDisabled}>Continue</button>
+                            </div>
+                        }
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body">
+                                <LabelGroup title="Source Account" text={accountNumber} />
+                                <LabelGroup title="Service" text={serviceId} />
+                                <LabelGroup title="Description" text={description} />
+                                <LabelGroup title="Amount" text={amount} />
+                                <button onClick={toggleDisabled} type="button" className="btn btn-danger" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Back</button>
+                                <button type="submit" className="btn btn-success">Pay</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

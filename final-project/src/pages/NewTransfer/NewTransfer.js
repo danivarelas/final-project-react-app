@@ -5,6 +5,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import Axios from 'axios';
 import './NewTransfer.scss';
 import { format } from 'date-fns';
+import LabelGroup from '../../components/LabelGroup/LabelGroup';
 
 const NewTransfer = () => {
 
@@ -21,24 +22,33 @@ const NewTransfer = () => {
     const [insufficientFunds, setInsufficientFunds] = useState(false);
     const [sameAccountt, setSameAccount] = useState(false);
     const [invalidAccount, setInvalidAccount] = useState(false);
+    const [inputDisabled, setInputDisabled] = useState(false);
+    const [submitDisabled, setSubmitDisabled] = useState(true);
 
     if (!validate(sessionStorage.getItem('JWT'))) {
         history.push("/login");
     }
 
     useEffect(() => {
+        if (description && amount && targetAccountNumber) {
+            setSubmitDisabled(false);
+        } else {
+            setSubmitDisabled(true);
+        }
         const token = sessionStorage.getItem('JWT');
         const claims = validate(token);
         if (claims) {
-            Axios.get(`http://localhost:8081/api/v1/account/byUserId/${claims.id}`, {
-                headers: { JWT: token }
-            }).then(res => {
-                const { data } = res;
-                setAccounts(data);
-                setSourceAccountNumber(data[0].accountNumber)
-            }).catch(e => {
+            if (!accounts.length) {
+                Axios.get(`http://localhost:8081/api/v1/account/byUserId/${claims.id}`, {
+                    headers: { JWT: token }
+                }).then(res => {
+                    const { data } = res;
+                    setAccounts(data);
+                    setSourceAccountNumber(data[0].accountNumber);
+                }).catch(e => {
 
-            });
+                });
+            }
             let dateToday = new Date();
             dateToday = format(dateToday, "dd/MM/yyyy");
             Axios.get(`https://tipodecambio.paginasweb.cr/api/${dateToday}`)
@@ -47,7 +57,7 @@ const NewTransfer = () => {
                     setExchangeRates(data);
                 });
         }
-    }, []);
+    }, [inputDisabled, submitDisabled, description, amount, targetAccountNumber, accounts, exchangeRates]);
 
     const handleSubmit = async (e) => {
         const token = sessionStorage.getItem('JWT');
@@ -110,36 +120,53 @@ const NewTransfer = () => {
     const handleCancel = () => { history.goBack(); }
 
     const handleSourceAccount = event => {
-        setSourceAccountNumber(event.target.value);
+        let { value } = event.target;
+        setSourceAccountNumber(value);
     };
 
     const handleDescription = event => {
-        setDescription(event.target.value);
+        let { value } = event.target;
+        setDescription(value);
     };
 
     const handleAmount = event => {
-        setAmount(event.target.value);
+        let { value } = event.target;
+        setAmount(value);
     };
 
     const handleTargetAccount = event => {
-        setTargetAccountNumber(event.target.value);
+        let { value } = event.target;
+        setTargetAccountNumber(value);
+    };
+
+    const toggleDisabled = event => {
+        setInputDisabled(!inputDisabled);
+        setInvalidAccount(false);
+        setSameAccount(false);
+        setInvalidAmount(false);
+        setInsufficientFunds(false);
     };
 
     return (
         <div className="wrapper">
             <div id="content">
                 <Navbar />
+                <div className="container-fluid">
+                    <div className="row">
+                        <h2 className="page-title">New Transfer</h2>
+                    </div>
+                </div>
                 <div className="block-section container-fluid">
                     <div className="block-section-header">
-                        <h3 className="block-section-header-text">New Transfer</h3>
+                        <h3 className="block-section-header-text">Transfer Details</h3>
                     </div>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label>Source Account</label>
-                            <select className="form-control" id="source-account" onChange={handleSourceAccount}>
+                            <select disabled={inputDisabled} className="form-control" id="source-account" onChange={handleSourceAccount}>
                                 {accounts.map((account, index) => {
                                     if (index === 0) {
-                                        return <option key={account.id} value={account.accountNumber} selected>
+                                        return <option key={account.id} value={account.accountNumber} >
                                             {account.accountNumber + " - " + account.balance + " " + account.currency}
                                         </option>;
                                     } else {
@@ -149,15 +176,14 @@ const NewTransfer = () => {
                                     }
                                 })}
                             </select>
-
                         </div>
                         <div className="form-group">
                             <label>Description</label>
-                            <input className="form-control" type="text" required onChange={handleDescription} />
+                            <input disabled={inputDisabled} className="form-control" type="text" required onChange={handleDescription} />
                         </div>
                         <div className="form-group">
                             <label>Amount</label>
-                            <input className="form-control" type="number" required step="0.01" onChange={handleAmount} />
+                            <input disabled={inputDisabled} className="form-control" type="number" required step="0.01" onChange={handleAmount} />
                             <small id="passwordHelpBlock" className="form-text text-muted">
                                 The amount has to be specified in the source account currency.
                             </small>
@@ -170,7 +196,7 @@ const NewTransfer = () => {
                         </div>
                         <div className="form-group">
                             <label>Target Account</label>
-                            <input className="form-control" type="text" required onChange={handleTargetAccount} />
+                            <input disabled={inputDisabled} className="form-control" type="text" required onChange={handleTargetAccount} />
                             {invalidAccount &&
                                 <div className="invalid-entry">This account doesn't exist.</div>
                             }
@@ -178,9 +204,22 @@ const NewTransfer = () => {
                                 <div className="invalid-entry">You can't transfer funds to the same account.</div>
                             }
                         </div>
-                        <button type="cancel" className="btn btn-danger" onClick={handleCancel}>Cancel</button>
-                        <button type="submit" className="btn btn-success">Transfer</button>
-
+                        {!inputDisabled &&
+                            <div className="form-group">
+                                <button type="cancel" className="btn btn-danger" onClick={handleCancel}>Cancel</button>
+                                <button disabled={submitDisabled} type="button" className="btn btn-success" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onClick={toggleDisabled}>Continue</button>
+                            </div>
+                        }
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body">
+                                <LabelGroup title="Source Account" text={sourceAccountNumber} />
+                                <LabelGroup title="Description" text={description} />
+                                <LabelGroup title="Amount" text={amount} />
+                                <LabelGroup title="Target Account" text={targetAccountNumber} />
+                                <button onClick={toggleDisabled} type="button" className="btn btn-danger" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Back</button>
+                                <button type="submit" className="btn btn-success">Transfer</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

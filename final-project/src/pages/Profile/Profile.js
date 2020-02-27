@@ -4,6 +4,7 @@ import validate from '../../utils/JWTParser';
 import Navbar from '../../components/Navbar/Navbar';
 import Axios from 'axios';
 import './Profile.scss';
+import LabelGroup from '../../components/LabelGroup/LabelGroup';
 
 const Profile = () => {
 
@@ -44,31 +45,21 @@ const Profile = () => {
         <div className="wrapper">
             <div id="content">
                 <Navbar />
+                <div className="container-fluid">
+                    <div className="row">
+                        <h2 className="page-title">Profile</h2>
+                    </div>
+                </div>
                 <div className="block-section container-fluid">
                     <div className="block-section-header">
                         <h3 className="block-section-header-text">Personal Information</h3>
                     </div>
                     <div>
-                        <div className="label-group row">
-                            <label className="label-title col-md-2">Name:</label>
-                            <label className="label-description col-md-2">{name}</label>
-                        </div>
-                        <div className="label-group row">
-                            <label className="label-title col-md-2">Last Name:</label>
-                            <label className="label-description col-md-2">{lastName}</label>
-                        </div>
-                        <div className="label-group row">
-                            <label className="label-title col-md-2">Username:</label>
-                            <label className="label-description col-md-2">{username}</label>
-                        </div>
-                        <div className="label-group row">
-                            <label className="label-title col-md-2">Email:</label>
-                            <label className="label-description col-md-2">{email}</label>
-                        </div>
-                        <div className="label-group row">
-                            <label className="label-title col-md-2">Phone Number:</label>
-                            <label className="label-description col-md-2">{"+" + countryCode + " " + phoneNumber}</label>
-                        </div>
+                        <LabelGroup title="Name" text={name}/>
+                        <LabelGroup title="Last Name" text={lastName}/>
+                        <LabelGroup title="Username" text={username}/>
+                        <LabelGroup title="Email" text={email}/>
+                        <LabelGroup title="Phone Number" text={`+${countryCode} ${phoneNumber}`}/>
                     </div>
                 </div>
             </div>

@@ -4,7 +4,6 @@ import Login from './pages/Login/Login';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Register from './pages/Register/Register';
 import Home from './pages/Home/Home';
-import CreditCards from './pages/CreditCards/CreditCards';
 import Payments from './pages/Payments/Payments';
 import Transfers from './pages/Transfers/Transfers';
 import Profile from './pages/Profile/Profile';
@@ -34,8 +33,6 @@ function App() {
                 <Route path="/home" component={Home} />
                 <Route path="/accounts/openAccount" component={OpenAccount} />
                 <Route path="/accounts/accountsInfo" component={AccountsInfo} />
-                <Route path="/creditCards/requestCard" component={CreditCards} />
-                <Route path="/creditCards" component={CreditCards} />
                 <Route path="/payments/payServices" component={NewServicePayment} />
                 <Route path="/payments/creditCards" component={Payments} />
                 <Route path="/payments" component={Payments} />

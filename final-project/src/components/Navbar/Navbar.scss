@@ -1,12 +1,12 @@
 .navbar {
+    display: none;
     padding: 1em;
     background: #fff;
-    margin-bottom: 2em;
     border-radius: 0.5em;
     box-shadow: 2px 2px 5px grey;
 
     .nav-btn-collapse {
-        margin: 0;
+        display: none;
         transform: scale(0);
         transition: all 0.2s ease-in-out;
     }
@@ -14,7 +14,9 @@
     .navbar-brand {
         font-weight: bold;
         font-size: 1.5em;
+
     }
+
 }
 
 .navbar-btn {
@@ -28,14 +30,42 @@
     min-width: 250px;
     max-width: 250px;
     height: 100vh;
-    background: white;
+    background: #2F323A;
     position: fixed;
     top: 0;
     left: 0;
     /* top layer */
     z-index: 9999;
-    color: black;
+    color: #bbb;
     transition: all 0.2s ease-in-out;
+
+    .btn-logout-container {
+        display: flex;
+        
+        .btn-logout {
+            align-self: flex-end;
+            background-color: transparent; /* Green */
+            border: none;
+            color: #bbb;
+            width: 100%;
+            text-align: left;
+            padding: 1.2em;
+            padding-left: 1.5em;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 0.9em;
+    
+            &:hover {
+                background-color: #bbb;
+                color: #AF2A2A;
+            }
+    
+            i {
+                margin: 0 0.5em;
+            }
+        }
+    }
 }
 
 #sidebar.active {
@@ -43,15 +73,15 @@
 }
 
 #sidebar .sidebar-header {
-    height: 9em;
-    padding: 1em;
-    margin-bottom: 1em;
+    padding: 0;
+    padding-bottom: 2em;
+    border-bottom: 1px solid #bbb;
 
     .header-btn-close {
+        margin: 1em;
         display: flex;
         justify-content: flex-end;
         transform: scale(0);
-        transition: all 0.2s ease-in-out;
     }
 
     .header-title {
@@ -60,39 +90,40 @@
         height: 100%;
 
         h3 {
+            text-align: center;
+            font-size: 2em;
             padding-bottom: 0.5em;
             display: block;
             width: 100%;
-            text-align: center;
             align-self: flex-end;
-            border-bottom: 0.1em solid rgb(39, 145, 194);
         }
     }
 }
 
 #sidebar ul.components {
-    padding: 2em 0;
-    border-bottom: 1px solid grey;
 
     .sidebar-link {
         text-decoration: none;
     }
+
 }
 
 #sidebar ul li a {
-    border-radius: 1em;
-    margin: 0.5em 1em;
-    padding: 0.6em 1em;
-    font-size: 1.1em;
+    padding: 1.2em 1.5em;
+    font-size: 0.9em;
     font-weight: bold;
     display: block;
     text-decoration: none;
-    background: #eee;
-    color: black;
+    color: #bbb;
+    border-bottom: 1px solid #bbb;
+    i {
+        margin: 0.5em;
+    }
 }
 
 #sidebar ul li a:hover {
-    background: #ddd;
+    color: #2F323A;
+    background-color: #bbb;
 }
 
 a[data-toggle="collapse"] {
@@ -116,8 +147,10 @@ ul ul {
 
 @media (max-width:899px) {
     .navbar {
+        display: flex;
 
         .nav-btn-collapse {
+            display: block;
             margin-right: 1em;
             transform: scale(1);
         }

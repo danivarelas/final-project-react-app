@@ -21,27 +21,31 @@ const Transfers = (props) => {
         const token = sessionStorage.getItem('JWT');
         const claims = validate(token);
         if (claims) {
-            Axios.get(`http://localhost:8081/api/v1/transfer/byAccountId/${account.id}`, {
-                headers: { JWT: token }
-            }).then(res => {
-                console.log(res.data)
-                setTransfersOut(res.data);
-            }).catch(e => {
-            });
-            Axios.get(`http://localhost:8081/api/v1/transfer/byTargetAccountId/${account.id}`, {
-                headers: { JWT: token }
-            }).then(res => {
-                console.log(res.data)
-                setTransfersIn(res.data);
-            }).catch(e => {
-            });
+            if (!transfersOut.length) {
+                Axios.get(`http://localhost:8081/api/v1/transfer/byAccountId/${account.id}`, {
+                    headers: { JWT: token }
+                }).then(res => {
+                    console.log(res.data)
+                    setTransfersOut(res.data);
+                }).catch(e => {
+                });
+            }
+            if (!transfersIn.length) {
+                Axios.get(`http://localhost:8081/api/v1/transfer/byTargetAccountId/${account.id}`, {
+                    headers: { JWT: token }
+                }).then(res => {
+                    console.log(res.data)
+                    setTransfersIn(res.data);
+                }).catch(e => {
+                });
+            }
         }
-    }, [account]);
+    }, [account, transfersIn, transfersOut]);
 
     return (
         <div>
-            <TransfersList transfers={transfersOut} account={account} title={"Outgoing transfers"} emptyMessage={"You haven't performed any transactions."} isOutgoing={true}/>
-            <TransfersList transfers={transfersIn} account={account} title={"Incoming transfers"} emptyMessage={"You haven't received any transactions."} isOutgoing={false}/>
+            <TransfersList transfers={transfersOut} account={account} title={"Outgoing transfers"} emptyMessage={"You haven't performed any transactions."} isOutgoing={true} />
+            <TransfersList transfers={transfersIn} account={account} title={"Incoming transfers"} emptyMessage={"You haven't received any transactions."} isOutgoing={false} />
         </div>
     );
 

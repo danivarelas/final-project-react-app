@@ -36,7 +36,7 @@ const Navbar = () => {
                 <div className="sidebar-header">
                     <div className="header-btn-close">
                         <button type="button" id="sidebarCollapse" className="btn btn-outline-secondary" onClick={toggleSidebar}>
-                            Close <i className="fas fa-times"></i>
+                            <i className="fas fa-times"></i>
                         </button>
                     </div>
                     <div className="header-title">
@@ -44,28 +44,22 @@ const Navbar = () => {
                     </div>
                 </div>
                 <ul className="list-unstyled components">
-                    <li className="sidebar-link"><Link to="/home">Summary</Link></li>
-                    <li>
-                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Payments</a>
-                        <ul className="collapse list-unstyled" id="homeSubmenu">
-                            <li className="sidebar-link"><Link to="/payments">View Payments</Link></li>
-                            <li className="sidebar-link"><Link to="/payments/payServices">Pay Services</Link></li>
-                        </ul>
-                    </li>
-                    <li className="sidebar-link"><Link to="/transfers/newTransfer">Transfer money</Link></li>
-                    <li className="sidebar-link"><Link to="/profile">Profile</Link></li>
+                    <li className="sidebar-link"><Link to="/home"><i class="fas fa-home"></i> Summary</Link></li>
+                    <li className="sidebar-link"><Link to="/payments"><i class="fas fa-money-check-alt"></i> Payments</Link></li>
+                    <li className="sidebar-link"><Link to="/transfers/newTransfer"><i class="fas fa-exchange-alt"></i> Transfer</Link></li>
+                    <li className="sidebar-link"><Link to="/profile"><i class="fas fa-user"></i> Profile</Link></li>
                 </ul>
+                <div className="btn-logout-container">
+                <button className="btn-logout" type="button" data-toggle="modal" data-target="#logoutModal">
+                    <i className="fas fa-sign-out-alt"></i>Logout
+                </button>
+                </div>
             </nav>
             <nav className="navbar sticky-top navbar-light bg-white">
                 <button type="button" className="btn btn-outline-secondary nav-btn-collapse" onClick={toggleSidebar}>
                     <i className="fas fa-bars"></i>
                 </button>
                 <Link className="navbar-brand" to="/home">PowerBank</Link>
-                <div className=" ml-auto">
-                    <button className="btn btn-outline-danger" type="button" data-toggle="modal" data-target="#logoutModal">
-                        Logout <i className="fas fa-sign-out-alt"></i>
-                    </button>
-                </div>
             </nav>
 
             <div className="modal fade" id="logoutModal" tabIndex="-1" role="dialog" aria-labelledby="logoutModalTitle" aria-hidden="true">

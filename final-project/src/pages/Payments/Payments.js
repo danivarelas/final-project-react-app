@@ -22,32 +22,38 @@ const Payments = () => {
         const token = sessionStorage.getItem('JWT');
         const claims = validate(token);
         if (claims) {
-            Axios.get(`http://localhost:8081/api/v1/payment/byUserId/${claims.id}`, {
-                headers: { JWT: token }
-            }).then(res => {
-                const { data } = res;
-                setPayments(data);
-            }).catch(e => {
+            if (!payments.length) {
+                Axios.get(`http://localhost:8081/api/v1/payment/byUserId/${claims.id}`, {
+                    headers: { JWT: token }
+                }).then(res => {
+                    const { data } = res;
+                    setPayments(data);
+                }).catch(e => {
 
-            });
-            Axios.get(`http://localhost:8081/api/v1/service`, {
-                headers: { JWT: token }
-            }).then(res => {
-                const { data } = res;
-                setServices(data);
-            }).catch(e => {
+                });
+            }
+            if (!services.length) {
+                Axios.get(`http://localhost:8081/api/v1/service`, {
+                    headers: { JWT: token }
+                }).then(res => {
+                    const { data } = res;
+                    setServices(data);
+                }).catch(e => {
 
-            });
-            Axios.get(`http://localhost:8081/api/v1/serviceType`, {
-                headers: { JWT: token }
-            }).then(res => {
-                const { data } = res;
-                setServiceTypes(data);
-            }).catch(e => {
+                });
+            }
+            if (!serviceTypes.length) {
+                Axios.get(`http://localhost:8081/api/v1/serviceType`, {
+                    headers: { JWT: token }
+                }).then(res => {
+                    const { data } = res;
+                    setServiceTypes(data);
+                }).catch(e => {
 
-            });
+                });
+            }
         }
-    }, []);
+    }, [payments, services, serviceTypes]);
 
     return (
         <div class="wrapper">
@@ -64,13 +70,13 @@ const Payments = () => {
                         <h3 className="block-section-header-text">Monthly Payments Overview</h3>
                     </div>
                     <div className="row">
-                        <div className="col-lg-6 payment-chart">
+                        <div className="col-md-6 payment-chart">
                             <h4>Spent in CRC</h4>
-                            <PaymentsChart chartId="totalCRC" payments={payments} serviceTypes={serviceTypes} services={services} isUSD={false}/>
+                            <PaymentsChart chartId="totalCRC" payments={payments} serviceTypes={serviceTypes} services={services} isUSD={false} />
                         </div>
-                        <div className="col-lg-6 payment-chart">
+                        <div className="col-md-6 payment-chart">
                             <h4>Spent in USD</h4>
-                            <PaymentsChart chartId="totalUSD" payments={payments} serviceTypes={serviceTypes} services={services} isUSD={true}/>
+                            <PaymentsChart chartId="totalUSD" payments={payments} serviceTypes={serviceTypes} services={services} isUSD={true} />
                         </div>
                     </div>
 
