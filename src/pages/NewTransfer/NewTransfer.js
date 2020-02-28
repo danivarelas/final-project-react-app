@@ -140,7 +140,10 @@ const NewTransfer = () => {
         return res.data.accountNumber ? res.data : null;
     };
 
-    const handleCancel = () => { history.push("/home"); }
+    const handleCancel = (e) => { 
+        e.preventDefault();
+        history.push("/home"); 
+    }
 
     const handleSourceAccount = event => {
         let { value } = event.target;
@@ -237,7 +240,7 @@ const NewTransfer = () => {
                                     <LabelGroup title="Target Account" text={targetAccountNumber} />
                                     <div className="btn-group-submit">
                                         <button onClick={toggleDisabled} type="button" className="button button--red" data-toggle="collapse" data-target="#collapseTransfer" aria-expanded="false" aria-controls="collapseTransfer">Back</button>
-                                        <button type="submit" className="button button--green">Transfer</button>
+                                        <button disabled={!inputDisabled} type="submit" className="button button--green">Transfer</button>
                                     </div>
                                 </div>
                             </div>

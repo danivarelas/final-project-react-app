@@ -136,7 +136,10 @@ const NewServicePayment = () => {
         return res.data.accountNumber ? res.data : null;
     };
 
-    const handleCancel = () => { history.push("/home"); }
+    const handleCancel = (e) => { 
+        e.preventDefault();
+        history.push("/home"); 
+    }
 
     const handleAccount = event => {
         setAccountNumber(event.target.value);
@@ -219,7 +222,7 @@ const NewServicePayment = () => {
                             </div>
                             {!inputDisabled &&
                                 <div className="btn-group-submit">
-                                    <button type="cancel" className="button button--red" onClick={handleCancel}>Cancel</button>
+                                    <button type="button" className="button button--red" onClick={handleCancel}>Cancel</button>
                                     <button disabled={submitDisabled} type="button" className="button button--green" data-toggle="collapse" data-target="#collapsePayment" aria-expanded="false" aria-controls="collapsePayment" onClick={toggleDisabled}>Continue</button>
                                 </div>
                             }
@@ -232,7 +235,7 @@ const NewServicePayment = () => {
                                     <LabelGroup title="Amount" text={amount} />
                                     <div className="btn-group-submit">
                                         <button onClick={toggleDisabled} type="button" className="button button--red" data-toggle="collapse" data-target="#collapsePayment" aria-expanded="false" aria-controls="collapsePayment">Back</button>
-                                        <button type="submit" className="button button--green">Pay</button>
+                                        <button disabled={!inputDisabled} type="submit" className="button button--green">Pay</button>
                                     </div>
                                 </div>
                             </div>

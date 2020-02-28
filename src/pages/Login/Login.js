@@ -76,7 +76,7 @@ const Login = () => {
                                 <li>Visualize your expenses</li>
                             </ul>
                             <br />
-                            <p>Create your account now to start enjoying this benefits.</p>
+                            <p>Create your account now to start enjoying these benefits.</p>
                         </div>
                     </div>
                 </div>
