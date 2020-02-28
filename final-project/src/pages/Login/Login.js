@@ -46,7 +46,7 @@ const Login = () => {
                     <div className="row">
                     <div className="col-md-6 login-form">
                             <div>
-                                <h1>Login to PowerBank</h1>
+                                <h1 className="login-form-title">Login to PowerBank</h1>
                                 <form onSubmit={handleSubmit}>
                                     <div className="form-group">
                                         <label>Username</label>
@@ -58,12 +58,10 @@ const Login = () => {
                                     </div>
                                     {
                                         invalidLogin &&
-                                        <div class="alert alert-danger fade show" role="alert">
-                                            Wrong username or password.
-                                        </div>
+                                        <div className="invalid-entry">Wrong username or password.</div>
                                     }
-                                    <div className="form-group">
-                                        <button className="btn btn-success" type="submit" >Login</button>
+                                    <div className="btn-group-submit">
+                                        <button className="button button--green" type="submit">Login</button>
                                     </div>
                                 </form>
                                 <p>Don't have an account? <Link to="/register">Register here</Link>.</p>

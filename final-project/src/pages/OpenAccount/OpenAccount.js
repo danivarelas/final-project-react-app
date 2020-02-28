@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import validate from '../../utils/JWTParser';
-import Navbar from '../../components/Navbar/Navbar';
 import Axios from 'axios';
+import emailjs from 'emailjs-com';
+import CardHeaderSimple from '../../components/CardHeaderSimple/CardHeaderSimple';
+import PageTitle from '../../components/PageTitle/PageTitle';
+import Sidebar from '../../components/Sidebar/Sidebar';
 
 const OpenAccount = () => {
 
@@ -27,19 +30,41 @@ const OpenAccount = () => {
             currency: currency,
             userId: claims.id
         }
-        console.log(account)
+        
+        const user = await getUser();
+
         Axios.post(`http://localhost:8081/api/v1/account`, account, {
             headers: { JWT: token }
-        })
-            .then(res => {
-                history.goBack();
+        }).then(res => {
+            const {data} = res;
+            if (user) {
+                let templateParams = {
+                    subject: 'Account opened',
+                    email: user.data.email,
+                    name: user.data.name,
+                    from: 'PowerBank',
+                    message: `You have successfully opened the account: #${data.accountNumber}`
+                };
+                emailjs.send('gmail', 'template_8HJ8XF0v', templateParams, 'user_ykN9aw27EcEhXClqMft4o');
+            }
+                history.push("/home");
             }).catch(e => {
-                console.log(e);
             });
         }
     }
 
-    const handleCancel = () => { history.goBack(); }
+    const getUser = async () => {
+        const token = sessionStorage.getItem('JWT');
+        const claims = validate(token);
+        if (claims) {
+            let res = await Axios.get(`http://localhost:8081/api/v1/user/byUsername/${claims.username}`);
+            return res;
+        } else {
+            return null;
+        }
+    };
+
+    const handleCancel = () => { history.push("/home"); }
 
     const handleDescription = event => {
         setDescription(event.target.value);
@@ -52,16 +77,10 @@ const OpenAccount = () => {
     return (
         <div className="wrapper">
             <div id="content">
-                <Navbar />
-                <div className="container-fluid">
-                    <div className="row">
-                        <h2 className="page-title">Open Account</h2>
-                    </div>
-                </div>
-                <div className="block-section container">
-                    <div className="block-section-header">
-                        <h3 className="block-section-header-text">New Account Details</h3>
-                    </div>
+                <Sidebar />
+                <PageTitle title="Open Account"/>
+                <div className="block-section container-fluid">
+                    <CardHeaderSimple title="New Account Details"/>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label>Currency</label>
@@ -74,8 +93,10 @@ const OpenAccount = () => {
                             <label>Description</label>
                             <input className="form-control" type="text" required onChange={handleDescription} />
                         </div>
-                        <button type="cancel" className="btn btn-danger" onClick={handleCancel}>Cancel</button>
-                        <button type="submit" className="btn btn-success">Open</button>
+                        <div className="btn-group-submit">
+                        <button type="cancel" className="btn-cancel" onClick={handleCancel}>Cancel</button>
+                        <button type="submit" className="btn-confirm">Open</button>
+                        </div>
                     </form>
                 </div>
             </div>

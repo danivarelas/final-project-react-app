@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import validate from '../../utils/JWTParser';
 import { format, parseISO } from 'date-fns';
 import './TransfersList.scss';
+import CardHeaderSimple from '../CardHeaderSimple/CardHeaderSimple';
 
 const TransfersList = (props) => {
 
@@ -25,13 +26,8 @@ const TransfersList = (props) => {
     }, [transfers]);
 
     return (
-        <div className="block-section container">
-            <div className="block-section-header">
-                {isOutgoing && <div className="block-section-header-edit">
-                    <Link to="/transfers/newTransfer" className="btn btn-outline-secondary">New Transfer</Link>
-                </div>}
-                <h3 className="block-section-header-text">{title}</h3>
-            </div>
+        <div className="block-section container-fluid">
+            <CardHeaderSimple title={title}/>
             {!showTransfers && <p>{emptyMessage}</p>}
             {showTransfers && <div>
                 <div className="table-responsive-md">

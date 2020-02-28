@@ -21,31 +21,33 @@ const Transfers = (props) => {
         const token = sessionStorage.getItem('JWT');
         const claims = validate(token);
         if (claims) {
-            if (!transfersOut.length) {
-                Axios.get(`http://localhost:8081/api/v1/transfer/byAccountId/${account.id}`, {
-                    headers: { JWT: token }
-                }).then(res => {
-                    console.log(res.data)
-                    setTransfersOut(res.data);
-                }).catch(e => {
-                });
-            }
-            if (!transfersIn.length) {
-                Axios.get(`http://localhost:8081/api/v1/transfer/byTargetAccountId/${account.id}`, {
-                    headers: { JWT: token }
-                }).then(res => {
-                    console.log(res.data)
-                    setTransfersIn(res.data);
-                }).catch(e => {
-                });
-            }
+            Axios.get(`http://localhost:8081/api/v1/transfer/byAccountId/${account.id}`, {
+                headers: { JWT: token }
+            }).then(res => {
+                console.log(res.data)
+                setTransfersOut(res.data);
+            }).catch(e => {
+            });
+            Axios.get(`http://localhost:8081/api/v1/transfer/byTargetAccountId/${account.id}`, {
+                headers: { JWT: token }
+            }).then(res => {
+                console.log(res.data)
+                setTransfersIn(res.data);
+            }).catch(e => {
+            });
         }
-    }, [account, transfersIn, transfersOut]);
+    }, [account]);
 
     return (
         <div>
-            <TransfersList transfers={transfersOut} account={account} title={"Outgoing transfers"} emptyMessage={"You haven't performed any transactions."} isOutgoing={true} />
-            <TransfersList transfers={transfersIn} account={account} title={"Incoming transfers"} emptyMessage={"You haven't received any transactions."} isOutgoing={false} />
+            <div className="row">
+                <div className="col-xl-6">
+                    <TransfersList transfers={transfersOut} account={account} title={"Outgoing transfers"} emptyMessage={"You haven't performed any transactions."} isOutgoing={true} />
+                </div>
+                <div className="col-xl-6">
+                    <TransfersList transfers={transfersIn} account={account} title={"Incoming transfers"} emptyMessage={"You haven't received any transactions."} isOutgoing={false} />
+                </div>
+            </div>
         </div>
     );
 

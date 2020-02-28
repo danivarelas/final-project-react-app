@@ -1,5 +1,7 @@
-.form-control {
-    border: none;
-    border-bottom: 0.1em solid black;
-    border-radius: 0;
+.confirm-container {
+    padding: 2em 3em;
+
+    .confirm-container-title {
+        margin: 1em 0;
+    }
 }

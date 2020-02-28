@@ -1,40 +1,82 @@
 @import 'bootstrap/scss/bootstrap.scss';
 
-.App {
-  text-align: center;
+$black: #000000;
+$white: #FFFFFF;
+$darkgray: #2F323A;
+$lightgray: #EEEEEE;
+$gray: #BBBBBB;
+$grayblue: #E6ECF2;
+$green: #428239;
+$red: #AF2A2A;
+$lightblue: #2791C2;
+
+.form-control {
+    border: none;
+    border: 0.1em solid $black;
+    border-radius: 2em;
+
+    &:disabled {
+        color: #bbb;
+        background-color: $lightgray;
+        border: 0.1em solid $gray;
+    }
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.btn-group-submit {
+    display: flex;
+    justify-content: flex-end;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.button {
+    background-color: transparent;
+    border: 0.2em solid transparent;
+    text-decoration: none;
+    border-radius: 2em;
+    font-weight: bold;
+    font-size: 1em;
+    margin: 0 0.5em;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.button--green {
+    color: $green;
+
+    &:disabled {
+        opacity: 0.4;
+        
+        &:hover {
+            border: 0.2em solid transparent;
+        }
+    }
+
+    &:hover {
+        border: 0.2em solid $green;
+    }
 }
 
-.App-link {
-  color: #61dafb;
+.button--red {
+    color: $red;
+
+    &:hover {
+        border: 0.2em solid $red;
+    }
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.button--gray {
+    color: $darkgray;
+    padding: 0.2em 0.5em;
+
+    &:hover {
+        text-decoration: none;
+        color: #2F323A;
+        border: 0.2em solid $darkgray;
+    }
+}
+
+.button--lightgray {
+    color: $gray;
+    padding: 0.2em 0.5em;
+
+    &:hover {
+        border: 0.2em solid $gray;
+    }
 }

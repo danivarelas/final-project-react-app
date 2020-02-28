@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import validate from '../../utils/JWTParser';
-import Navbar from '../../components/Navbar/Navbar';
 import './Payments.scss'
 import Axios from 'axios';
 import PaymentsChart from '../../components/PaymentsChart/PaymentsChart';
+import CardHeader from '../../components/CardHeader/CardHeader';
+import PageTitle from '../../components/PageTitle/PageTitle';
+import Sidebar from '../../components/Sidebar/Sidebar';
 
 const Payments = () => {
 
@@ -58,17 +60,10 @@ const Payments = () => {
     return (
         <div class="wrapper">
             <div id="content">
-                <Navbar />
-                <div>
-                    <h2 className="page-title">All Payments</h2>
-                </div>
+                <Sidebar />
+                <PageTitle title="All Payments"/>
                 <div className="block-section container-fluid">
-                    <div className="block-section-header">
-                        <div className="block-section-header-edit">
-                            <Link to="/payments/payServices" className="btn btn-outline-secondary">Pay Services</Link>
-                        </div>
-                        <h3 className="block-section-header-text">Monthly Payments Overview</h3>
-                    </div>
+                    <CardHeader title="Monthly Payments Overview" link="Pay Services" to="/payments/payServices"/>
                     <div className="row">
                         <div className="col-md-6 payment-chart">
                             <h4>Spent in CRC</h4>

@@ -4,15 +4,11 @@
     position: relative;
 
     .bg-image {
-        /* The image used */
         background-image: url("../../assets/images/login-background.jpg");
-        /* Add the blur effect */
         filter: blur(1em);
         -webkit-filter: blur(1em);
-        opacity: 0.5;
-        /* Full height */
+        opacity: 0.7;
         height: 100%;
-        /* Center and scale the image nicely */
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -34,9 +30,16 @@
             max-width: 1200px;
             background-color: #fff;
 
+            .login-form-title {
+                font-size: 1.8em;
+                margin: 1em 0;
+                text-align: center;
+            }
+
             .bank-info {
                 background-color: #2F323A;
-                padding: 0;
+                color: #bbb;
+                padding: 3em 5em;
             }
 
             .login-form {

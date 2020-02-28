@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import validate from '../../utils/JWTParser';
-import Navbar from '../../components/Navbar/Navbar';
 import Axios from 'axios';
 import emailjs from 'emailjs-com';
 import LabelGroup from '../../components/LabelGroup/LabelGroup';
+import NoAccounts from '../../components/NoAccounts/NoAccounts';
+import CardHeaderSimple from '../../components/CardHeaderSimple/CardHeaderSimple';
+import PageTitle from '../../components/PageTitle/PageTitle';
+import Sidebar from '../../components/Sidebar/Sidebar';
 
 const NewServicePayment = () => {
 
@@ -16,6 +19,7 @@ const NewServicePayment = () => {
     const [serviceId, setServiceId] = useState("");
 
     const [accounts, setAccounts] = useState([]);
+    const [hasAccounts, setHasAccounts] = useState(false);
     const [services, setServices] = useState([]);
     const [invalidAmount, setInvalidAmount] = useState(false);
     const [insufficientFunds, setInsufficientFunds] = useState(false);
@@ -45,6 +49,8 @@ const NewServicePayment = () => {
                 }).catch(e => {
 
                 });
+            } else {
+                setHasAccounts(true);
             }
             if (!services.length) {
                 Axios.get(`http://localhost:8081/api/v1/service`, {
@@ -84,35 +90,43 @@ const NewServicePayment = () => {
                 serviceId: serviceId
             }
 
-            console.log(payment)
+            const user = await getUser();
 
             Axios.post(`http://localhost:8081/api/v1/payment`, payment, {
                 headers: { JWT: token }
             }).then(res => {
                 const { data } = res;
                 const paidService = services.filter(service => service.id === data.serviceId)[0].serviceName;
-                let templateParams = {
-                    subject: `Service Payment: ${paidService}`,
-                    email: 'daniel.varela.serrano@gmail.com',
-                    name: 'Daniel',
-                    from: 'PowerBank',
-                    message: `You have successfully paid ${data.amount} ${data.currency} to the service: ${paidService}`
-                };
-                emailjs.send('gmail', 'template_8HJ8XF0v', templateParams, 'user_ykN9aw27EcEhXClqMft4o');
-                history.goBack();
+                if (user) {
+                    let templateParams = {
+                        subject: 'Transfer succesful',
+                        email: user.data.email,
+                        name: user.data.name,
+                        from: 'PowerBank',
+                        message: `You have successfully paid ${data.amount} ${data.currency} to the service: ${paidService}`
+                    };
+                    emailjs.send('gmail', 'template_8HJ8XF0v', templateParams, 'user_ykN9aw27EcEhXClqMft4o');
+                }
+                history.push("/payments");
             }).catch(e => {
-                console.log(e);
                 setInsufficientFunds(true);
             });
         }
     }
 
-    const checkAmount = () => {
-        if (amount > 0) {
-            return true;
+    const getUser = async () => {
+        const token = sessionStorage.getItem('JWT');
+        const claims = validate(token);
+        if (claims) {
+            let res = await Axios.get(`http://localhost:8081/api/v1/user/byUsername/${claims.username}`);
+            return res;
         } else {
-            return false;
+            return null;
         }
+    };
+
+    const checkAmount = () => {
+        return amount > 0 ? true : false;
     };
 
     const checkAccount = async (number) => {
@@ -122,7 +136,7 @@ const NewServicePayment = () => {
         return res.data.accountNumber ? res.data : null;
     };
 
-    const handleCancel = () => { history.goBack(); }
+    const handleCancel = () => { history.push("/home"); }
 
     const handleAccount = event => {
         setAccountNumber(event.target.value);
@@ -145,84 +159,89 @@ const NewServicePayment = () => {
         setInvalidAmount(false);
         setInsufficientFunds(false);
     };
+    
+    const findService = (services && services.length) ? services.filter(service => service.id === serviceId)[0] : null;
+    const serviceName = findService ? findService.serviceName : "";
 
     return (
         <div className="wrapper">
             <div id="content">
-                <Navbar />
-                <div className="container-fluid">
-                    <div className="row">
-                        <h2 className="page-title">Pay Services</h2>
-                    </div>
-                </div>
-                <div className="block-section container-fluid">
-                    <div className="block-section-header">
-                        <h3 className="block-section-header-text">Payment Details</h3>
-                    </div>
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label>Source Account</label>
-                            <select className="form-control" id="source-account" onChange={handleAccount}>
-                                {accounts.map((account, index) => {
-                                    if (index === 0) {
-                                        return <option key={account.id} value={account.accountNumber} selected>
-                                            {account.accountNumber + " - " + account.balance + " " + account.currency}
-                                        </option>;
-                                    } else {
-                                        return <option key={account.id} value={account.accountNumber}>
-                                            {account.accountNumber + " - " + account.balance + " " + account.currency}
-                                        </option>;
-                                    }
-                                })}
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <label>Service</label>
-                            <select className="form-control" id="service" onChange={handleService}>
-                                {services.map((service, index) => {
-                                    if (index === 0) {
-                                        return <option key={service.id} value={service.id} selected>{service.serviceName}</option>;
-                                    } else {
-                                        return <option key={service.id} value={service.id}>{service.serviceName}</option>;
-                                    }
-                                })}
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <label>Description</label>
-                            <input className="form-control" type="text" required onChange={handleDescription} />
-                        </div>
-                        <div className="form-group">
-                            <label>Amount</label>
-                            <input className="form-control" type="number" required step="0.01" onChange={handleAmount} />
-                            <small id="passwordHelpBlock" className="form-text text-muted">
-                                The amount has to be specified in the source account currency.
-                            </small>
-                            {invalidAmount &&
-                                <div className="invalid-entry">You have to specify an amount greater than zero.</div>
-                            }
-                            {insufficientFunds &&
-                                <div className="invalid-entry">You have insufficient funds.</div>
-                            }
-                        </div>
-                        {!inputDisabled &&
+                <Sidebar />
+                <PageTitle title="Pay Services"/>
+                {hasAccounts &&
+                    <div className="block-section container-fluid">
+                        <CardHeaderSimple title="Payment Details"/>
+                        <form onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <button type="cancel" className="btn btn-danger" onClick={handleCancel}>Cancel</button>
-                                <button disabled={submitDisabled} type="button" className="btn btn-success" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onClick={toggleDisabled}>Continue</button>
+                                <label>Source Account</label>
+                                <select disabled={inputDisabled} className="form-control" id="source-account" onChange={handleAccount}>
+                                    {accounts.map((account, index) => {
+                                        if (index === 0) {
+                                            return <option key={account.id} value={account.accountNumber} selected>
+                                                {account.accountNumber + " - " + account.balance + " " + account.currency}
+                                            </option>;
+                                        } else {
+                                            return <option key={account.id} value={account.accountNumber}>
+                                                {account.accountNumber + " - " + account.balance + " " + account.currency}
+                                            </option>;
+                                        }
+                                    })}
+                                </select>
                             </div>
-                        }
-                        <div class="collapse" id="collapseExample">
-                            <div class="card card-body">
-                                <LabelGroup title="Source Account" text={accountNumber} />
-                                <LabelGroup title="Service" text={serviceId} />
-                                <LabelGroup title="Description" text={description} />
-                                <LabelGroup title="Amount" text={amount} />
-                                <button onClick={toggleDisabled} type="button" className="btn btn-danger" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Back</button>
-                                <button type="submit" className="btn btn-success">Pay</button>
+                            <div className="form-group">
+                                <label>Service</label>
+                                <select disabled={inputDisabled} className="form-control" id="service" onChange={handleService}>
+                                    {services.map((service, index) => {
+                                        if (index === 0) {
+                                            return <option key={service.id} value={service.id} selected>{service.serviceName}</option>;
+                                        } else {
+                                            return <option key={service.id} value={service.id}>{service.serviceName}</option>;
+                                        }
+                                    })}
+                                </select>
                             </div>
-                        </div>
-                    </form>
-                </div>
+                            <div className="form-group">
+                                <label>Description</label>
+                                <input disabled={inputDisabled} className="form-control" type="text" required onChange={handleDescription} />
+                            </div>
+                            <div className="form-group">
+                                <label>Amount</label>
+                                <input disabled={inputDisabled} className="form-control" type="number" required step="0.01" onChange={handleAmount} />
+                                <small id="passwordHelpBlock" className="form-text text-muted">
+                                    The amount has to be specified in the source account currency.
+                            </small>
+                                {invalidAmount &&
+                                    <div className="invalid-entry">You have to enter an amount greater than zero.</div>
+                                }
+                                {insufficientFunds &&
+                                    <div className="invalid-entry">You have insufficient funds.</div>
+                                }
+                            </div>
+                            {!inputDisabled &&
+                                <div className="btn-group-submit">
+                                    <button type="cancel" className="button button--red" onClick={handleCancel}>Cancel</button>
+                                    <button disabled={submitDisabled} type="button" className="button button--green" data-toggle="collapse" data-target="#collapsePayment" aria-expanded="false" aria-controls="collapsePayment" onClick={toggleDisabled}>Continue</button>
+                                </div>
+                            }
+                            <div class="collapse mt-5" id="collapsePayment">
+                                <div class="card card-body confirm-container">
+                                    <h4 className="confirm-container-title">Confirm Transaction</h4>
+                                    <LabelGroup title="Source Account" text={accountNumber} />
+                                    <LabelGroup title="Service" text={serviceName} />
+                                    <LabelGroup title="Description" text={description} />
+                                    <LabelGroup title="Amount" text={amount} />
+                                    <div className="btn-group-submit">
+                                        <button onClick={toggleDisabled} type="button" className="button button--red" data-toggle="collapse" data-target="#collapsePayment" aria-expanded="false" aria-controls="collapsePayment">Back</button>
+                                        <button type="submit" className="button button--green">Pay</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                }
+                {!hasAccounts &&
+                    <NoAccounts/>
+                }
             </div>
         </div>
     );

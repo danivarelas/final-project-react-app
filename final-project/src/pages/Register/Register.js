@@ -48,10 +48,11 @@ const Register = () => {
             } else {
                 Axios.post(`http://localhost:8081/api/v1/user`, user)
                 .then(res => {
+                    const {data} = res;
                     let templateParams = {
                         subject: 'Welcome to PowerBank',
-                        email: 'daniel.varela.serrano@gmail.com',
-                        name: 'Daniel',
+                        email: data.email,
+                        name: data.name,
                         from: 'PowerBank',
                         message: 'Your account has been created successfully.'
                     };
@@ -173,9 +174,9 @@ const Register = () => {
                         <div className="invalid-entry">Passwords don't match.</div>
                     }
                 </div>
-                <div className="form-group">
-                    <button className="btn btn-success" type="submit">Register</button>
-                    <button className="btn btn-danger" type="cancel" onClick={handleCancel}>Cancel</button>
+                <div className="btn-group-submit">
+                    <button className="button button--red" type="cancel" onClick={handleCancel}>Cancel</button>
+                    <button className="button button--green" type="submit">Register</button>
                 </div>
             </form>
         </div>

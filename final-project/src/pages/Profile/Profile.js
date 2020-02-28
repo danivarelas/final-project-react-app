@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import validate from '../../utils/JWTParser';
-import Navbar from '../../components/Navbar/Navbar';
 import Axios from 'axios';
 import './Profile.scss';
 import LabelGroup from '../../components/LabelGroup/LabelGroup';
+import CardHeaderSimple from '../../components/CardHeaderSimple/CardHeaderSimple';
+import PageTitle from '../../components/PageTitle/PageTitle';
+import Sidebar from '../../components/Sidebar/Sidebar';
 
 const Profile = () => {
 
@@ -44,16 +46,10 @@ const Profile = () => {
     return (
         <div className="wrapper">
             <div id="content">
-                <Navbar />
-                <div className="container-fluid">
-                    <div className="row">
-                        <h2 className="page-title">Profile</h2>
-                    </div>
-                </div>
+                <Sidebar />
+                <PageTitle title="Profile"/>
                 <div className="block-section container-fluid">
-                    <div className="block-section-header">
-                        <h3 className="block-section-header-text">Personal Information</h3>
-                    </div>
+                    <CardHeaderSimple title="Personal Information"/>
                     <div>
                         <LabelGroup title="Name" text={name}/>
                         <LabelGroup title="Last Name" text={lastName}/>

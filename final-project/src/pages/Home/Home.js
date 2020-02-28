@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from '../../components/Navbar/Navbar';
 import './Home.scss';
 import { useHistory } from 'react-router-dom';
 import validate from '../../utils/JWTParser';
 import Axios from 'axios';
 import Accounts from '../Accounts/Accounts';
 import { format } from 'date-fns';
+import ExchangeRates from '../../components/ExchangeRates/ExchangeRates';
+import Sidebar from '../../components/Sidebar/Sidebar';
 
 const Home = () => {
 
@@ -27,7 +28,6 @@ const Home = () => {
                     headers: { JWT: token }
                 }).then(res => {
                     const { data } = res;
-                    console.log(data)
                     setAccounts(data);
                 }).catch(e => {
 
@@ -41,23 +41,19 @@ const Home = () => {
                     setExchangeRates(data);
                 });
         }
-    }, [accounts, exchangeRates]);
+    }, [accounts]);
 
     return (
         <div className="wrapper">
             <div id="content">
-                <Navbar />
+                <Sidebar />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col">
                             <h2 className="page-title">Products Summary</h2>
                         </div>
                         <div className="col">
-                            <div className="exchange-rates">
-                                <p className="exchange-rates-title">Exchange rates today</p>
-                                <p><strong>Buy:</strong> {exchangeRates.compra} CRC</p>
-                                <p><strong>Sell:</strong> {exchangeRates.venta} CRC</p>
-                            </div>
+                            <ExchangeRates buy={exchangeRates.compra} sell={exchangeRates.venta}/>
                         </div>
                     </div>
                 </div>

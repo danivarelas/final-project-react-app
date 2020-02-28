@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import validate from '../../utils/JWTParser';
+import CardHeader from '../../components/CardHeader/CardHeader';
 
 const Accounts = (props) => {
 
@@ -24,13 +25,7 @@ const Accounts = (props) => {
 
     return (
         <div className="block-section container-fluid">
-            <div className="block-section-header">
-                <div className="block-section-header-edit">
-                    <Link to="/accounts/openAccount" className="btn btn-outline-secondary">Open account</Link>
-                </div>
-
-                <h3 className="block-section-header-text">Accounts</h3>
-            </div>
+            <CardHeader title="Accounts" link="Open Account" to="/accounts/openAccount"/>
             {!showAccounts && <p>You don't have any open accounts to your name.</p>}
             {showAccounts && <div>
                 <p>This is the list of accounts linked to your profile.</p>

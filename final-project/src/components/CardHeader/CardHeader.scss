@@ -1,0 +1,14 @@
+.block-section-header {
+    margin-bottom: 2em;
+    
+    .block-section-header-text {
+        padding: 0.5em 0;
+        font-size: 1.5em;
+        border-bottom: 0.1em solid rgb(39, 145, 194);
+    }
+
+    .block-section-header-edit {
+        display: flex;
+        justify-content: flex-end;
+    }
+}
