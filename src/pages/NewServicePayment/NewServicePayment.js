@@ -165,7 +165,7 @@ const NewServicePayment = () => {
 
     return (
         <div className="wrapper">
-            <div id="content">
+            <div className="content">
                 <Sidebar />
                 <PageTitle title="Pay Services"/>
                 {hasAccounts &&

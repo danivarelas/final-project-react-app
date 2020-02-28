@@ -76,7 +76,7 @@ const OpenAccount = () => {
 
     return (
         <div className="wrapper">
-            <div id="content">
+            <div className="content">
                 <Sidebar />
                 <PageTitle title="Open Account"/>
                 <div className="block-section container-fluid">

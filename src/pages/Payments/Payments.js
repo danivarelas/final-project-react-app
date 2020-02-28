@@ -59,7 +59,7 @@ const Payments = () => {
 
     return (
         <div class="wrapper">
-            <div id="content">
+            <div className="content">
                 <Sidebar />
                 <PageTitle title="All Payments"/>
                 <div className="block-section container-fluid">

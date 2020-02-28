@@ -25,7 +25,7 @@ const AccountsInfo = (props) => {
 
     return (
         <div className="wrapper">
-            <div id="content">
+            <div className="content">
                 <Sidebar />
                 <PageTitle title="Account Information"/>
                 <div className="block-section container-fluid">

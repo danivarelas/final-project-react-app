@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './Home.scss';
 import { useHistory } from 'react-router-dom';
 import validate from '../../utils/JWTParser';
 import Axios from 'axios';
@@ -45,7 +44,7 @@ const Home = () => {
 
     return (
         <div className="wrapper">
-            <div id="content">
+            <div className="content">
                 <Sidebar />
                 <div className="container-fluid">
                     <div className="row">

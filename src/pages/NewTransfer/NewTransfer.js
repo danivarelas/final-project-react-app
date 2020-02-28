@@ -172,7 +172,7 @@ const NewTransfer = () => {
 
     return (
         <div className="wrapper">
-            <div id="content">
+            <div className="content">
                 <Sidebar />
                 <PageTitle title="New Transfer"/>
                 {hasAccounts &&

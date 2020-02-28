@@ -10,6 +10,29 @@ $green: #428239;
 $red: #AF2A2A;
 $lightblue: #2791C2;
 
+.wrapper {
+    display: flex;
+    background-color: #E6ECF2;
+    width: 100%;
+    align-items: stretch;
+
+    .content {
+        padding: 1em 2em;
+        width: 100%;
+        margin-left: 250px;
+        min-height: 100vh;
+        transition: all 0.3s;
+
+        .block-section {
+            background-color: white;
+            border-radius: 0.5em;
+            box-shadow: 2px 2px 5px grey;
+            padding: 2em;
+            margin-bottom: 2em;
+        }
+    }
+}
+
 .form-control {
     border: none;
     border: 0.1em solid $black;
@@ -78,5 +101,21 @@ $lightblue: #2791C2;
 
     &:hover {
         border: 0.2em solid $gray;
+    }
+}
+
+.invalid-entry {
+    color: red;
+    font-size: 1em;
+    padding: 0.4em 0;
+}
+
+@media (max-width:899px) {
+    .wrapper {
+
+        .content {
+            padding: 1em;
+            margin-left: 0;
+        }
     }
 }

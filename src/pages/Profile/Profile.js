@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import validate from '../../utils/JWTParser';
 import Axios from 'axios';
-import './Profile.scss';
 import LabelGroup from '../../components/LabelGroup/LabelGroup';
 import CardHeaderSimple from '../../components/CardHeaderSimple/CardHeaderSimple';
 import PageTitle from '../../components/PageTitle/PageTitle';
@@ -45,7 +44,7 @@ const Profile = () => {
 
     return (
         <div className="wrapper">
-            <div id="content">
+            <div className="content">
                 <Sidebar />
                 <PageTitle title="Profile"/>
                 <div className="block-section container-fluid">

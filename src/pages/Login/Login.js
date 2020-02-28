@@ -68,7 +68,16 @@ const Login = () => {
                             </div>
                         </div>
                         <div className="col-md-6 bank-info">
-                            <p>info</p>
+                            <h2 className="bank-info-title"><i class="fab fa-superpowers"></i> PowerBank</h2>
+                            <p>With PowerBank you can:</p>
+                            <ul>
+                                <li>Transfer money</li>
+                                <li>Pay lots of services</li>
+                                <li>Visualize your expenses</li>
+                                <li>Generate reports</li>
+                            </ul>
+                            <br/>
+                            <p>Create your account now to start enjoying this benefits.</p>
                         </div>
                     </div>
                 </div>
