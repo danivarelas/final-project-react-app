@@ -40,14 +40,8 @@ const Transfers = (props) => {
 
     return (
         <div>
-            <div className="row">
-                <div className="col-xl-6">
-                    <TransfersList transfers={transfersOut} account={account} title={"Outgoing transfers"} emptyMessage={"You haven't performed any transactions."} isOutgoing={true} />
-                </div>
-                <div className="col-xl-6">
-                    <TransfersList transfers={transfersIn} account={account} title={"Incoming transfers"} emptyMessage={"You haven't received any transactions."} isOutgoing={false} />
-                </div>
-            </div>
+            <TransfersList transfers={transfersOut} account={account} title={"Outgoing transfers"} emptyMessage={"You haven't performed any transactions."} isOutgoing={true} />
+            <TransfersList transfers={transfersIn} account={account} title={"Incoming transfers"} emptyMessage={"You haven't received any transactions."} isOutgoing={false} />
         </div>
     );
 

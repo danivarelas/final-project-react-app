@@ -11,7 +11,7 @@ const Navbar = (props) => {
             <button type="button" className="button button--gray nav-btn-collapse" onClick={toggleSidebar}>
                 <i className="fas fa-bars"></i>
             </button>
-            <Link className="navbar-brand" to="/home"><i class="fab fa-superpowers"></i> PowerBank</Link>
+            <Link className="navbar-brand" to="/home"><i className="fab fa-superpowers"></i> PowerBank</Link>
         </nav>
     );
 }

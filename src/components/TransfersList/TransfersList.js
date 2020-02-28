@@ -27,36 +27,43 @@ const TransfersList = (props) => {
 
     return (
         <div className="block-section container-fluid">
-            <CardHeaderSimple title={title}/>
+            <CardHeaderSimple title={title} />
             {!showTransfers && <p>{emptyMessage}</p>}
             {showTransfers && <div>
-                <div className="table-responsive-md">
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th>Number</th>
-                                <th>Description</th>
-                                <th>Date</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {transfers.map(transfer => {
-                                return <tr>
-                                    <td>{transfer.transferNumber}</td>
-                                    <td>{transfer.transferDescription}</td>
-                                    <td>{format(parseISO(transfer.transferDate), 'dd/MM/yyyy')}</td>
-                                    {isOutgoing && <td className="outgoing-amount">{`${transfer.amount} ${account.currency}`}</td>}
-                                    {!isOutgoing && <td className="incoming-amount">{`${transfer.targetAmount} ${account.currency}`}</td>}
-                                </tr>
-                            })}
-                        </tbody>
-                    </table>
+                <div className="transfers-container">
+                    {transfers.map(transfer => {
+                        return <div className="transfer">
+                            <div className="row">
+                                <div className="col">
+                                    <div className="row">
+                                        <span><strong>#:</strong></span>
+                                        <span>{transfer.transferNumber}</span>
+                                    </div>
+                                    <div className="row">
+                                        <span><strong>Description:</strong></span>
+                                        <span>{transfer.transferDescription}</span>
+                                    </div>
+                                </div>
+                                <div className="col">
+                                    <div className="row">
+                                        <span><strong>Date:</strong></span>
+                                        <span>{format(parseISO(transfer.transferDate), 'dd/MM/yyyy')}</span>
+                                    </div>
+                                    <div className="row">
+                                        <span><strong>Amount:</strong></span>
+                                        {isOutgoing && <span className="outgoing-amount">{`${transfer.amount} ${account.currency}`}</span>}
+                                        {!isOutgoing && <span className="incoming-amount">{`${transfer.targetAmount} ${account.currency}`}</span>}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    })}
                 </div>
 
             </div>
             }
-            
+
         </div>
     );
 

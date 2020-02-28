@@ -94,8 +94,8 @@ const OpenAccount = () => {
                             <input className="form-control" type="text" required onChange={handleDescription} />
                         </div>
                         <div className="btn-group-submit">
-                        <button type="cancel" className="btn-cancel" onClick={handleCancel}>Cancel</button>
-                        <button type="submit" className="btn-confirm">Open</button>
+                        <button type="cancel" className="button button--red" onClick={handleCancel}>Cancel</button>
+                        <button type="submit" className="button button--green">Open</button>
                         </div>
                     </form>
                 </div>

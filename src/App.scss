@@ -12,7 +12,7 @@ $lightblue: #2791C2;
 
 .wrapper {
     display: flex;
-    background-color: #E6ECF2;
+    background-color: $grayblue;
     width: 100%;
     align-items: stretch;
 
@@ -62,50 +62,60 @@ $lightblue: #2791C2;
 
 .button--green {
     color: $green;
+    border: 0.2em solid $green;
 
     &:disabled {
         opacity: 0.4;
         
         &:hover {
-            border: 0.2em solid transparent;
+            color: $green;
+            background-color: transparent;
         }
     }
 
     &:hover {
-        border: 0.2em solid $green;
+        color: $white;
+        background-color: $green;
     }
 }
 
 .button--red {
     color: $red;
+    border: 0.2em solid $red;
 
     &:hover {
-        border: 0.2em solid $red;
+        color: $white;
+        background-color: $red;
+        
     }
 }
 
 .button--gray {
     color: $darkgray;
+    border: 0.2em solid $darkgray;
     padding: 0.2em 0.5em;
 
     &:hover {
+        color: $white;
+        background-color: $darkgray;
         text-decoration: none;
-        color: #2F323A;
-        border: 0.2em solid $darkgray;
+        
     }
 }
 
 .button--lightgray {
     color: $gray;
-    padding: 0.2em 0.5em;
+    border: 0.2em solid $gray;
+    padding: 0.1em 0.5em;
 
     &:hover {
-        border: 0.2em solid $gray;
+        color: $darkgray;
+        background-color: $gray;
     }
 }
 
 .invalid-entry {
-    color: red;
+    color: $red;
     font-size: 1em;
     padding: 0.4em 0;
 }

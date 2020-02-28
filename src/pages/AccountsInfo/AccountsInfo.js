@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import validate from '../../utils/JWTParser';
 import Transfers from '../Transfers/Transfers';
@@ -16,12 +16,6 @@ const AccountsInfo = (props) => {
     if (!validate(sessionStorage.getItem('JWT'))) {
         history.push("/login");
     }
-
-    useEffect(() => {
-        const claims = validate(sessionStorage.getItem('JWT'));
-        if (claims) {
-        }
-    }, []);
 
     return (
         <div className="wrapper">

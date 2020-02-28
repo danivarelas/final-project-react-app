@@ -40,11 +40,11 @@ const Login = () => {
 
     return (
         <div className="login-container">
-            <div class="bg-image"></div>
+            <div className="bg-image"></div>
             <div className="login-form-container">
                 <div className="login-form-container-content">
                     <div className="row">
-                    <div className="col-md-6 login-form">
+                        <div className="col-md-6 login-form">
                             <div>
                                 <h1 className="login-form-title">Login to PowerBank</h1>
                                 <form onSubmit={handleSubmit}>
@@ -64,25 +64,23 @@ const Login = () => {
                                         <button className="button button--green" type="submit">Login</button>
                                     </div>
                                 </form>
-                                <p>Don't have an account? <Link to="/register">Register here</Link>.</p>
+                                <p className="mt-2">Don't have an account? <Link to="/register">Register here</Link>.</p>
                             </div>
                         </div>
                         <div className="col-md-6 bank-info">
-                            <h2 className="bank-info-title"><i class="fab fa-superpowers"></i> PowerBank</h2>
+                            <h2 className="bank-info-title"><i className="fab fa-superpowers"></i> PowerBank</h2>
                             <p>With PowerBank you can:</p>
                             <ul>
                                 <li>Transfer money</li>
                                 <li>Pay lots of services</li>
                                 <li>Visualize your expenses</li>
-                                <li>Generate reports</li>
                             </ul>
-                            <br/>
+                            <br />
                             <p>Create your account now to start enjoying this benefits.</p>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     );
 }

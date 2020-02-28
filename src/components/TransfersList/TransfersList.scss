@@ -1,3 +1,15 @@
+.transfers-container {
+    max-height: 1000px;
+    overflow-y: scroll;
+
+    .transfer {
+        background-color: #eee;
+        margin: 0.5em;
+        padding: 1em 2em;
+        border-radius: 0.5em;
+    }
+}
+
 .outgoing-amount {
     font-weight: bold;
     color: #AF2A2A;

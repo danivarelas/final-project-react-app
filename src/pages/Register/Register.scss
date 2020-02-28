@@ -1,0 +1,26 @@
+.register-form-container {
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+
+    .register-form-container-content {
+        align-self: center;
+        padding: 2em;
+        margin: 1em;
+        width: 80%;
+        background-color: #fff;
+        border-radius: 0.5em;
+        box-shadow: 2px 2px 5px grey;
+
+        .register-form-title {
+            font-size: 1.8em;
+            margin: 1em 0;
+            text-align: center;
+        }
+    }
+
+}

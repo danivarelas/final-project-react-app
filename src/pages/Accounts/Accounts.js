@@ -32,19 +32,19 @@ const Accounts = (props) => {
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>Number</th>
-                            <th>Balance</th>
-                            <th>View</th>
+                            <th className="text-center">Number</th>
+                            <th className="text-center">Balance</th>
                         </tr>
                     </thead>
                     <tbody>
                         {accounts.map(account => {
                             return <tr>
-                                <td>{account.accountNumber}</td>
-                                <td>{account.balance + " " + account.currency}</td>
-                                <td><Link to={{ pathname: '/accounts/accountsInfo', state: { account }}}>
-                                    <i className="fas fa-eye"></i></Link>
+                                <td className="text-center">
+                                    <Link to={{ pathname: '/accounts/accountsInfo', state: { account }}}>
+                                    {account.accountNumber}
+                                    </Link>
                                 </td>
+                                <td className="text-center">{account.balance + " " + account.currency}</td>
                             </tr>
                         })}
                     </tbody>
